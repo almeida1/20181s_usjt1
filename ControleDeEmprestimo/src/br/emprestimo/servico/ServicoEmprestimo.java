@@ -14,11 +14,13 @@ public class ServicoEmprestimo {
 			throw new RuntimeException("Dados inválidos.");
 		} else {
 			Emprestimo emprestimo = new Emprestimo();
-			emprestimo.setLivro(livro);
+			emprestimo.setEmprestimoNumero();
 			emprestimo.setUsuario(usuario);
+			emprestimo.setLivro(livro);
 			// data do emprestimo - data atual do sistema
 			DateTime dataAtual = new DateTime();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/YYYY");
+			//DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/YYYY");
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY/MM/dd");
 			emprestimo.setDataEmprestimo(dataAtual.toString(fmt));
 			// prazo de devolucao 8 dias
 			DateTime dataDevolucao = fmt.parseDateTime(emprestimo.getDataEmprestimo());
@@ -28,3 +30,5 @@ public class ServicoEmprestimo {
 	}
 
 }
+
+
