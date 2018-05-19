@@ -3,9 +3,11 @@ import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.emprestimo.modelo.Emprestimo;
+import br.emprestimo.modelo.EmprestimoDAO;
 import br.emprestimo.modelo.Livro;
 import br.emprestimo.modelo.Usuario;
 import br.emprestimo.servico.ConfiguraConexao;
@@ -92,13 +94,14 @@ public class UC01RegistraEmprestimoDeLivro {
 		String dataEmprestimo = emprestimo.setDataEmprestimo();
 		assertTrue(dataAtual.equals(dataEmprestimo));
 	}
+	@Ignore
 	@Test
 	public void CT05_conecta_db_com_sucesso() {
-		// cenario
-		String url = "jdbc:mysql://mysql8.db4free.net:3306/sceweb";
+		// cenario  - configuracao fateczl
+		String url = "jdbc:mysql://localhost:3306/sceweb";
 		String driver = "com.mysql.jdbc.Driver";
-		String usuario = "alunos";
-		String senha = "alunosfatec";
+		String usuario = "root";
+		String senha = "alunofatec";
 		// acao
 		ConfiguraConexao configuraDB = new ConfiguraConexao(url, driver, usuario, senha);
 		FabricaDeConexoes fabricaDeConexoes = new FabricaDeConexoes(configuraDB);
@@ -106,6 +109,59 @@ public class UC01RegistraEmprestimoDeLivro {
 		assertNotNull(fabricaDeConexoes.getConnection());
 	}
 
+	@Test
+	public void CT06QuandoInserirUmEmprestimoRetornaTrue(){
+		//cenario
+		Emprestimo umEmprestimo = new Emprestimo();
+		Usuario umUsuario = ObtemUsuario.comDadosValidos();
+		Livro umLivro = ObtemLivro.comDadosValidos();
+		ServicoEmprestimo servico = new ServicoEmprestimo();
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+		//acao
+		boolean resultadoEsperado=emprestimoDAO.adiciona(umEmprestimo);
+		//verificacao
+		assertTrue(resultadoEsperado);
+		
+	}
+	@Test
+	public void CT07ConsultaRegistroComSucesso(){
+		//cenario
+		Emprestimo umEmprestimo = new Emprestimo();
+		Usuario umUsuario = ObtemUsuario.comDadosValidos();
+		Livro umLivro = ObtemLivro.comDadosValidos();
+		ServicoEmprestimo servico = new ServicoEmprestimo();
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adiciona(umEmprestimo);
+		//insere 2 registro
+		umUsuario = ObtemUsuario.listaComDadosValidos().get(0);
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adiciona(umEmprestimo);
+		//insere 3 registro
+		umUsuario = ObtemUsuario.listaComDadosValidos().get(1);
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adiciona(umEmprestimo);
+		//insere 4 registro
+		umUsuario = ObtemUsuario.listaComDadosValidos().get(2);
+		umEmprestimo = servico.empresta(umLivro, umUsuario);
+		emprestimoDAO = new EmprestimoDAO();
+		emprestimoDAO.adiciona(umEmprestimo);
+        //acao
+		Emprestimo resultadoObtido = emprestimoDAO.consulta(umEmprestimo);
+        assertTrue(resultadoObtido.equals(umEmprestimo));		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

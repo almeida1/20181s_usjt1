@@ -8,10 +8,10 @@ import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
 public class FabricaDeConexoes {
 	
-	String url = "jdbc:mysql://mysql8.db4free.net:3306/sceweb";
+	String url = "jdbc:mysql://localhost:3306/sceweb";
 	String driver = "com.mysql.jdbc.Driver";
 	String usuario = "alunos";
-	String senha = "alunosfatec";
+	String senha = "alunofatec";
 	
 	public FabricaDeConexoes (ConfiguraConexao configura){
 		this.url = configura.getUrl();
