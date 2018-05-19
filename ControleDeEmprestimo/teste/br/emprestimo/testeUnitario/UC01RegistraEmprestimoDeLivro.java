@@ -8,6 +8,8 @@ import org.junit.Test;
 import br.emprestimo.modelo.Emprestimo;
 import br.emprestimo.modelo.Livro;
 import br.emprestimo.modelo.Usuario;
+import br.emprestimo.servico.ConfiguraConexao;
+import br.emprestimo.servico.FabricaDeConexoes;
 import br.emprestimo.servico.ServicoEmprestimo;
 
 import org.joda.time.DateTime;
@@ -90,6 +92,20 @@ public class UC01RegistraEmprestimoDeLivro {
 		String dataEmprestimo = emprestimo.setDataEmprestimo();
 		assertTrue(dataAtual.equals(dataEmprestimo));
 	}
+	@Test
+	public void CT05_conecta_db_com_sucesso() {
+		// cenario
+		String url = "jdbc:mysql://mysql8.db4free.net:3306/sceweb";
+		String driver = "com.mysql.jdbc.Driver";
+		String usuario = "alunos";
+		String senha = "alunosfatec";
+		// acao
+		ConfiguraConexao configuraDB = new ConfiguraConexao(url, driver, usuario, senha);
+		FabricaDeConexoes fabricaDeConexoes = new FabricaDeConexoes(configuraDB);
+		// verificacao
+		assertNotNull(fabricaDeConexoes.getConnection());
+	}
+
 	
 	
 }
